@@ -1,8 +1,8 @@
 # SimpleTaskList
-A simple web task list
+A simple task list developed for web usage
 
 
-Uses
+**Uses**
 - HTML 5
 - CSS
 - Vue
