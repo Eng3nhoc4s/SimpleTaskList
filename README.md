@@ -1,5 +1,5 @@
 # SimpleTaskList
-A simple we task list
+A simple web task list
 
 
 Uses
