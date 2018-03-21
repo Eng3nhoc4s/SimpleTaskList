@@ -1,0 +1,24 @@
+.container-fluid {
+	margin-left: 20px;
+	margin-right: 20px;
+}
+
+.whiteText {
+	color: white;
+}
+
+li {
+	border-radius: 70px 10px 70px 10px;
+	padding: 10px;
+	margin: 5px;
+	list-style-type: none;
+
+}
+
+li#complete  {
+	background-color: #53c9e6;
+}
+
+li#incomplete {
+	background-color: #e3d056;
+}

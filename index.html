@@ -1,0 +1,182 @@
+<html>
+	<head>
+		<title>
+			My To-Do List
+		</title>
+
+		<link rel="stylesheet" type="text/css" href="bootstrap.css">
+		<link rel="stylesheet" type="text/css" href="styles.css">
+		<script src="./vue.js"></script>
+	</head>
+
+	<body>
+		<div id="root" class="container">
+
+			<nav class="navbar navbar-dark bg-dark">
+			  <h1 class="whiteText">My To-Do List</h1>
+			</nav>
+
+		</br>
+
+			<div class="row">
+				<div class="col-sm">
+					<h1 class="text-center">Add New Task</h1>
+
+						<!-- Task Name input -->
+						<div class="input-group mb-3">
+						  <div class="input-group-prepend">
+						    <span class="input-group-text" id="inputGroup-sizing-default">Task Name</span>
+						  </div>
+						  <input type="text" class="form-control" aria-label="Task Name" aria-describedby="inputGroup-sizing-default" v-model="tName">
+						</div>
+
+						<!-- Task Description input -->
+						<div class="input-group mb-3">
+						  <div class="input-group-prepend">
+						    <span class="input-group-text">Task Description</span>
+						  </div>
+						  <textarea class="form-control" aria-label="With textarea" v-model="tDesc"></textarea>
+						</div>
+
+						<!-- Task Date input -->
+						<div class="input-group mb-3">
+						  <div class="input-group-prepend">
+						    <span class="input-group-text" id="inputGroup-sizing-default">Task Date</span>
+						  </div>
+						  <input type="date" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default" v-model="tDate">
+						</div>
+
+						<!-- Task Time input -->
+						<div class="input-group mb-3">
+						  <div class="input-group-prepend">
+						    <span class="input-group-text" id="inputGroup-sizing-default">Task Time</span>
+						  </div>
+						  <input type="time" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default" v-model="tTime">
+						</div>
+
+						<!-- Task Submit input -->
+						<button class="btn btn-primary" @click="addTask">Create Task</button>
+						<button class="btn btn-danger" @click="clearInput()">Clear</button>
+				</div>
+
+				<!-- Incomplete Tasks -->
+				<div class="col-sm">
+					<h1 class="text-center">To-Do Tasks</h1>
+					<ul>
+						<li id="incomplete" v-for="task in taskList" v-if="!task.isComplete">
+							<div class="text-center">
+								<strong>{{task.date}} - {{task.time}}</strong></br>
+								<strong>{{task.name}}</strong></br>
+								<small>{{task.desc}}</small></br></br>
+							</div>
+							<button class="btn btn-success" @click="completeTask(task)">Complete Task</button>
+							<button class="btn btn-danger" @click="removeTask(task)">X</button>
+						</li>
+					</ul>
+				</div>
+
+				<!-- Completed Tasks -->
+				<div class="col-sm">
+					<h1 class="text-center">Completed Tasks</h1>
+					<ul>
+						<li id="complete" v-for="task in taskList" v-if="task.isComplete">
+							<div class="text-center">
+								<strong>{{task.date}} - {{task.time}}</strong></br>
+								<strong>{{task.name}}</strong></br>
+								<small>{{task.desc}}</small></br></br>
+							</div>
+							<button class="btn btn-success" @click="redoTask(task)">Redo Task</button>
+							<button class="btn btn-danger" @click="removeTask(task)">X</button>
+						</li>
+					</ul>
+				</div>
+
+			</div>
+		</div>
+
+		<!-- What makes it tick -->
+		<script>
+			var vm = new Vue({
+				el: '#root',
+
+				data: {
+
+					idCounter: 0,
+
+					tName: '',
+					tDesc: '',
+					tDate: '',
+					tTime: '',
+
+					taskList: [],
+
+				},
+
+				created() {
+					console.log('CREATED'),
+					this.idCounter = JSON.parse(localStorage.getItem('idCounter'))
+					this.taskList = JSON.parse(localStorage.getItem('tasks'))
+				},
+
+				methods: {
+
+					addTask() {
+
+						if(this.tName == '' || this.tDame == '' || this.tDate == '' || this.tTime == ''){
+
+							alert('You need to fill all the input!')
+
+						}else{
+
+							task = ({id: this.idCounter, name: this.tName, desc: this.tDesc, date: this.tDate, time: this.tTime, isComplete: false}),
+							this.taskList.push(task),
+							this.idCounter++,
+							this.saveState(),
+							this.clearInput()
+
+						}
+					},
+
+					completeTask(task) {
+						for (var _i = 0; _i < this.taskList.length; _i++) {
+							if(task.id == this.taskList[_i].id){
+								this.taskList[_i].isComplete = true,
+								this.saveState()
+							}
+						}
+					},
+
+					redoTask(task) {
+						for (var _j = 0; _j < this.taskList.length; _j++) {
+							if(task.id == this.taskList[_j].id){
+								this.taskList[_j].isComplete = false,
+								this.saveState()
+							}
+						}
+					},
+
+					removeTask(task){
+						this.taskList.splice(this.taskList.indexOf(task), 1),
+						this.saveState()
+					},
+
+					clearInput() {
+						this.tName = '',
+						this.tDesc = '',
+						this.tDate = '',
+						this.tTime = ''
+					},
+
+					saveState() {
+						console.log('State Saved'),
+						localStorage.setItem('idCounter', JSON.stringify(this.idCounter)),
+						localStorage.setItem('tasks', JSON.stringify(this.taskList))
+					},
+
+			},
+			})
+
+		</script>
+
+	</body>
+</html>
