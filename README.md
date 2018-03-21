@@ -1,2 +1,10 @@
 # SimpleTaskList
-A simple task list developed with HTML5, CSS and Vue JS
+A simple we task list
+
+
+Uses
+- HTML 5
+- CSS
+- Vue
+- Bootstrap 4
+- LocalStorage
